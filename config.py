@@ -1,14 +1,18 @@
 import os
 
-# Railway avtomatik beradigan portni oladi
-PORT = int(os.environ.get("PORT", 8443))
+PORT = int(os.environ.get("PORT", 8444))
 
-# 32 ta belgidan iborat maxfiy kalit
+# Localhost uchun MY_DOMAIN ni 127.0.0.1 qilib belgilaymiz
+MY_DOMAIN = "127.0.0.1"
+
+# Doimiy static secret
+secret = os.environ.get("SECRET", "8a592c9e619e176fdfec261ed7d56eab")
+
 USERS = {
-    "tg": "0123456789abcdef0123456789abcdef"
+    "myuser": secret
 }
 
-# Barcha rejimlarni yoqamiz (oddiy va Fake-TLS havolalarini birga chiqarish uchun)
+# Barcha rejimlarni yoqamiz
 MODES = {
     "classic": True,
     "secure": True,
