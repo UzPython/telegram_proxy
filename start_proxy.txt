@@ -1,0 +1,6 @@
+tg://proxy?server=127.0.0.1&port=8444&secret=ee8a592c9e619e176fdfec261ed7d56eab7777772e676f6f676c652e636f6d
+buni yozing yoki
+
+Hostname:127.0.0.1
+port:8444
+secret:ee8a592c9e619e176fdfec261ed7d56eab7777772e676f6f676c652e636f6d

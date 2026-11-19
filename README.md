@@ -1,3 +1,4 @@
+Bu Loyhani asosiy vazafasi telegram birir bir davlatga bloklansa cheklab utish kamchiliklari bor ishlabman ustida
 # Telegram MTProto Proxy (Fake-TLS) - Railway uchun
 
 Bu loyiha Telegram uchun shaxsiy **MTProto Proxy** (Fake-TLS rejimi bilan) yaratish va uni **Railway** platformasida bepul (yoki hamyonbop tarifda) ishga tushirish uchun tayyorlandi.
@@ -42,3 +43,9 @@ Ushbu havolani Telegramda oching (domen o'rniga o'zingizning Railway domeningizn
 tg://proxy?server=SIZNING_DOMAIN&port=443&secret=ee0123456789abcdef0123456789abcdefwww.google.com
 ```
 *(Eslatma: Fake-TLS sekret `ee` prefiksi va oxiriga domen hex kodiga ega bo'ladi, yoki oddiygina Telegram sozlamalaridan server, port va hex-secret ni kiritib ulanishingiz mumkin).*
+
+## Windowsda fon va avtomatik ishga tushirish
+
+`start.bat` proxy'ni yashirin fonda ishga tushiradi; ishga tushiruvchi oynani yopish proxy'ni to'xtatmaydi. Avtomatik ishga tushirish joriy Windows foydalanuvchisi tizimga kirganda amalga oshadi. Uni o'chirish uchun `Win+R` orqali `shell:startup` papkasini ochib, `Telegram Proxy.lnk` yorlig'ini o'chiring.
+
+`MY_DOMAIN = "127.0.0.1"` bo'lsa, havola faqat proxy ishlayotgan shu kompyuterda ishlaydi. Telefon yoki boshqa qurilmadan ulanish uchun o'sha qurilmadan ko'rinadigan LAN yoki public IP manzil kerak.

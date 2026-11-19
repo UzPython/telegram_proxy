@@ -1,9 +1,11 @@
 @echo off
 setlocal
-cd /d "%~dp0"
 title Telegram Proxy Server
-echo Starting Telegram Proxy. Keep this window open.
-echo The connection link and secret will appear below.
-echo.
-TelegramProxy.exe
-pause
+echo Telegram Proxy fonda ishga tushirilmoqda...
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0..\start_proxy.ps1"
+if errorlevel 1 (
+    echo Ishga tushmadi. Jurnal: %LOCALAPPDATA%\TelegramProxy\startup.log
+    pause
+    exit /b 1
+)
+echo Oyna yopilsa ham proxy fonda ishlashda davom etadi.
