@@ -1,3 +1,4 @@
+Bu Loyhani asosiy vazafasi telegram birir bir davlatga bloklansa cheklab utish kamchiliklari bor ishlabman ustida
 # Telegram MTProto Proxy (Fake-TLS) - Railway uchun
 
 Bu loyiha Telegram uchun shaxsiy **MTProto Proxy** (Fake-TLS rejimi bilan) yaratish va uni **Railway** platformasida bepul (yoki hamyonbop tarifda) ishga tushirish uchun tayyorlandi.
