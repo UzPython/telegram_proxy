@@ -68,4 +68,4 @@ APK `android\app\build\outputs\apk\debug\app-debug.apk` manzilida yaratiladi. AP
 
 ## Aloqa va qo'llab-quvvatlash
 
-Savollar va yordam uchun Telegram: [@UzPython212](https://t.me/UzPython212).
+Savollar va yordam uchun Telegram: [@UzbPython212](https://t.me/UzbPython212).
