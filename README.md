@@ -46,6 +46,8 @@ tg://proxy?server=SIZNING_DOMAIN&port=443&secret=ee0123456789abcdef0123456789abc
 
 ## Windowsda fon va avtomatik ishga tushirish
 
-`start.bat` proxy'ni yashirin fonda ishga tushiradi; ishga tushiruvchi oynani yopish proxy'ni to'xtatmaydi. Avtomatik ishga tushirish joriy Windows foydalanuvchisi tizimga kirganda amalga oshadi. Uni o'chirish uchun `Win+R` orqali `shell:startup` papkasini ochib, `Telegram Proxy.lnk` yorlig'ini o'chiring.
+Windows foydalanuvchilari `release\TelegramProxy.exe` yoki tayyor Windows ZIP paketidan foydalanishi mumkin; ishga tushirish uchun Python o'rnatish talab qilinmaydi. ZIP'ni to'liq chiqarib, `start.bat` ni oching.
+
+`start.bat` proxy'ni yashirin fonda ishga tushiradi; ishga tushiruvchi oynani yopish proxy'ni to'xtatmaydi. Avtomatik ishga tushirish uchun `install_autostart.bat` ni bir marta ishga tushiring; proxy joriy foydalanuvchi Windows'ga kirganda boshlanadi. Uni o'chirish uchun `Win+R` orqali `shell:startup` papkasini ochib, `Telegram Proxy.lnk` yorlig'ini o'chiring.
 
 `MY_DOMAIN = "127.0.0.1"` bo'lsa, havola faqat proxy ishlayotgan shu kompyuterda ishlaydi. Telefon yoki boshqa qurilmadan ulanish uchun o'sha qurilmadan ko'rinadigan LAN yoki public IP manzil kerak.
