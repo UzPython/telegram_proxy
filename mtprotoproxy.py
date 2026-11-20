@@ -18,6 +18,7 @@ import runpy
 import signal
 import os
 import stat
+import threading
 import traceback
 
 
@@ -96,6 +97,9 @@ stats = collections.Counter()
 user_stats = collections.defaultdict(collections.Counter)
 
 config = {}
+proxy_loop = None
+proxy_stop_requested = False
+proxy_loop_lock = threading.Lock()
 
 
 def init_config():
@@ -2231,6 +2235,9 @@ def setup_asyncio():
 
 
 def setup_signals():
+    if threading.current_thread() is not threading.main_thread():
+        return
+
     if hasattr(signal, 'SIGUSR1'):
         def debug_signal(signum, frame):
             import pdb
@@ -2356,7 +2363,18 @@ def create_utilitary_tasks(loop):
     return tasks
 
 
-def main():
+def stop_proxy():
+    global proxy_stop_requested
+
+    with proxy_loop_lock:
+        proxy_stop_requested = True
+        if proxy_loop is not None and not proxy_loop.is_closed():
+            proxy_loop.call_soon_threadsafe(proxy_loop.stop)
+
+
+def main(on_ready=None, install_signal_handlers=True):
+    global proxy_loop, proxy_stop_requested
+
     init_config()
     ensure_users_in_user_stats()
     apply_upstream_proxy_settings()
@@ -2365,7 +2383,8 @@ def main():
 
     setup_asyncio()
     setup_files_limit()
-    setup_signals()
+    if install_signal_handlers:
+        setup_signals()
     try_setup_uvloop()
 
     init_proxy_start_time()
@@ -2376,38 +2395,52 @@ def main():
         loop = asyncio.new_event_loop()
 
     asyncio.set_event_loop(loop)
+    with proxy_loop_lock:
+        proxy_loop = loop
+        if proxy_stop_requested:
+            loop.call_soon(loop.stop)
+
     loop.set_exception_handler(loop_exception_handler)
 
-    utilitary_tasks = create_utilitary_tasks(loop)
-    for task in utilitary_tasks:
-        asyncio.ensure_future(task)
-
-    servers = create_servers(loop)
-
+    servers = []
     try:
+        utilitary_tasks = create_utilitary_tasks(loop)
+        for task in utilitary_tasks:
+            asyncio.ensure_future(task)
+
+        servers = create_servers(loop)
+        if on_ready is not None:
+            on_ready()
+
         loop.run_forever()
     except KeyboardInterrupt:
         pass
+    finally:
+        try:
+            if hasattr(asyncio, "all_tasks"):
+                tasks = asyncio.all_tasks(loop)
+            else:
+                # for compatibility with Python 3.6
+                tasks = asyncio.Task.all_tasks(loop)
 
-    if hasattr(asyncio, "all_tasks"):
-        tasks = asyncio.all_tasks(loop)
-    else:
-        # for compatibility with Python 3.6
-        tasks = asyncio.Task.all_tasks(loop)
+            for task in tasks:
+                task.cancel()
+            if tasks:
+                loop.run_until_complete(asyncio.gather(*tasks, return_exceptions=True))
 
-    for task in tasks:
-        task.cancel()
+            for server in servers:
+                server.close()
+                loop.run_until_complete(server.wait_closed())
 
-    for server in servers:
-        server.close()
-        loop.run_until_complete(server.wait_closed())
+            has_unix = hasattr(socket, "AF_UNIX")
 
-    has_unix = hasattr(socket, "AF_UNIX")
-
-    if config.LISTEN_UNIX_SOCK and has_unix:
-        remove_unix_socket(config.LISTEN_UNIX_SOCK)
-
-    loop.close()
+            if config.LISTEN_UNIX_SOCK and has_unix:
+                remove_unix_socket(config.LISTEN_UNIX_SOCK)
+        finally:
+            with proxy_loop_lock:
+                proxy_loop = None
+                proxy_stop_requested = False
+            loop.close()
 
 
 if __name__ == "__main__":

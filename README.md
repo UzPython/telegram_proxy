@@ -51,3 +51,13 @@ Windows foydalanuvchilari `release\TelegramProxy.exe` yoki tayyor Windows ZIP pa
 `start.bat` proxy'ni yashirin fonda ishga tushiradi; ishga tushiruvchi oynani yopish proxy'ni to'xtatmaydi. Avtomatik ishga tushirish uchun `install_autostart.bat` ni bir marta ishga tushiring; proxy joriy foydalanuvchi Windows'ga kirganda boshlanadi. Uni o'chirish uchun `Win+R` orqali `shell:startup` papkasini ochib, `Telegram Proxy.lnk` yorlig'ini o'chiring.
 
 `MY_DOMAIN = "127.0.0.1"` bo'lsa, havola faqat proxy ishlayotgan shu kompyuterda ishlaydi. Telefon yoki boshqa qurilmadan ulanish uchun o'sha qurilmadan ko'rinadigan LAN yoki public IP manzil kerak.
+
+## Android telefon uchun APK
+
+`android\app\build\outputs\apk\debug\app-debug.apk` faylini telefonga ko'chirib o'rnating. Ilova Python 3.10 muhitini o'z ichiga oladi; telefonga Python o'rnatish shart emas. Hozirgi APK ARM64 telefonlar va x86_64 qurilmalar uchun, Android 7.0 (API 24) va undan yangilariga mo'ljallangan.
+
+Ilovani ochib, **Proksini ishga tushirish** tugmasini bosing va **Telegramga ulash**-ni tanlang. Proxy telefonning o'zida `127.0.0.1:8444` manzilida ishlaydi; doimiy bildirishnoma ko'rinib turishi kerak. To'xtatish uchun ilovadagi tugmani bosing. Bu sozlama faqat shu telefondagi Telegram uchun; boshqa qurilmalardan ulanishni yoqmaydi.
+
+Muhim: telefondagi lokal proxy Telegram serverlariga shu telefon interneti orqali chiqadi. Tarmoq Telegram serverlariga chiqishni bloklasa, bu APK blokni chetlab o'tishni kafolatlamaydi; bunday holatda proxy'ni Telegram serverlariga chiqa oladigan boshqa serverda ishga tushirish kerak.
+
+APK'ni qayta yig'ish uchun JDK 17, Android SDK, Python 3.10 kerak bo'ladi. `ANDROID_HOME` o'zgaruvchisini SDK papkasiga sozlab, Windows'da `android\gradlew.bat assembleDebug` buyrug'ini bajaring.

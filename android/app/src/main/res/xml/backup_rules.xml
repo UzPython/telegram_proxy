@@ -1,0 +1,3 @@
+<full-backup-content>
+    <exclude domain="sharedpref" path="telegram_proxy.xml" />
+</full-backup-content>
