@@ -22,11 +22,11 @@ Fake-TLS hamma operator yoki tarmoqda ishlashiga kafolat yo'q. Natija serverning
 
 ## Windows
 
-`release\TelegramProxy.exe` faylini ishga tushiring. Dastur Python talab qilmaydi; odatiy sozlamada proxy `8444` portida tinglaydi va Telegram ulanish havolasini ko'rsatadi.
+`release\TelegramProxy.exe` faylini bevosita ochsangiz konsol oynasi ko'rinadi. Oynasiz fonda ishga tushirish uchun `dist\start.bat` faylini oching. Dastur Python talab qilmaydi; odatiy sozlamada proxy `8444` portida tinglaydi.
 
 Joriy `MY_DOMAIN = "127.0.0.1"` sozlamasi bilan havola faqat shu kompyuterdagi Telegram uchun ishlaydi. Boshqa qurilmadan ulash uchun kompyuterga yetib boradigan LAN/public IP yoki domenni sozlash, Windows Firewall va kerak bo'lsa routerda TCP portni ochish zarur.
 
-Kompyuterga kirganda avtomatik ishga tushirish uchun `install_autostart.bat` faylini bir marta ishga tushiring. Avtomatik ishga tushirishni o'chirish uchun Windows'ning `shell:startup` papkasidagi `Telegram Proxy.lnk` yorlig'ini olib tashlang.
+Windows'ga kirganda avtomatik va yashirin ishga tushirish uchun `install_autostart.bat` faylini bir marta ishga tushiring. Bu faqat joriy foydalanuvchining Startup papkasiga yorliq qo'shadi; administrator huquqi yoki Windows servisi talab qilinmaydi. Avtomatik ishga tushirishni o'chirish uchun `Win+R` orqali `shell:startup` papkasini ochib, `Telegram Proxy.lnk` yorlig'ini olib tashlang.
 
 ## Android
 
