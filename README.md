@@ -65,3 +65,7 @@ android\gradlew.bat assembleDebug
 ```
 
 APK `android\app\build\outputs\apk\debug\app-debug.apk` manzilida yaratiladi. APK foydalanuvchilarga yangilanish sifatida tarqatilganda, release buildni bir xil imzolash kaliti bilan yig'ish va `versionCode` qiymatini oshirish kerak.
+
+## Aloqa va qo'llab-quvvatlash
+
+Savollar va yordam uchun Telegram: [@UzPython212](https://t.me/UzPython212).
