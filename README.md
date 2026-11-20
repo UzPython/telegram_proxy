@@ -1,63 +1,67 @@
-Bu Loyhani asosiy vazafasi telegram birir bir davlatga bloklansa cheklab utish kamchiliklari bor ishlabman ustida
-# Telegram MTProto Proxy (Fake-TLS) - Railway uchun
+# Telegram MTProto Proxy (Fake-TLS)
 
-Bu loyiha Telegram uchun shaxsiy **MTProto Proxy** (Fake-TLS rejimi bilan) yaratish va uni **Railway** platformasida bepul (yoki hamyonbop tarifda) ishga tushirish uchun tayyorlandi.
+## Xaridor uchun qisqacha ma'lumot
 
-## 📁 Fayllar tarkibi:
-- `mtprotoproxy.py` - Proxyning asosiy dasturiy qismi.
-- `config.py` - Sozlamalar fayli (parol, port, fake-tls domeni).
-- `requirements.txt` - Kerakli kutubxonalar (`cryptography`).
-- `Dockerfile` - Railway uchun konteyner sozlamasi.
+Bu loyiha Telegram uchun MTProto proxy xizmatini o'zingizning kompyuteringizda yoki serveringizda ishga tushirishga mo'ljallangan. Fake-TLS rejimi ayrim tarmoqlarda proxy trafikini oddiy TLS trafikiga o'xshatishga yordam berishi mumkin.
 
----
+Loyiha quyidagilarni o'z ichiga oladi:
 
-## 🚀 Railway-ga joylash bo'yicha qo'llanma (Qadam-baqadam):
+- **Windows dasturi:** tayyor `TelegramProxy.exe`; foydalanuvchi kompyuteriga Python o'rnatish talab qilinmaydi.
+- **Android ilovasi:** Python muhiti ichiga joylangan APK; proxy'ni telefonda fon xizmatida ishga tushiradi va Telegramga ulanish havolasini beradi.
+- **Server manbasi:** Dockerfile va Python manba kodi orqali Linux serverda joylashtirish imkoniyati.
 
-### 1. GitHub-ga yuklash:
-1. GitHub-da yangi **Public** yoki **Private** repository (omborxona) yarating.
-2. Ushbu papkadagi barcha fayllarni (`mtprotoproxy.py`, `config.py`, `requirements.txt`, `Dockerfile`, `railway.json`) o'sha repositoryga yuklang.
+Bu VPN emas: u butun qurilmaning internet trafikini yo'naltirmaydi, faqat Telegram ilovasida sozlangan proxy ulanishiga xizmat qiladi.
 
-### 2. Railway-da ishga tushirish:
-1. [railway.app](https://railway.app) saytiga kiring va GitHub profilingiz orqali kiring.
-2. **New Project** tugmasini bosing va **Deploy from GitHub repo** ni tanlang.
-3. Yangi yaratgan repositoryni tanlang va **Deploy** qiling.
+## Muhim: proxy qayerda ishlaydi?
 
-### 3. Domen (Domain) ochish:
-1. Loyihangiz ochilgandan so'ng, uning **Settings** (Sozlamalar) bo'limiga o'ting.
-2. **Networking** qismidan **Generate Domain** tugmasini bosing.
-3. Railway sizga domen taqdim etadi (masalan: `my-proxy-production.up.railway.app`).
+Windows dasturi va Android APK standart holatda proxy'ni faqat o'z qurilmasida, `127.0.0.1:8444` manzilida ishga tushiradi. `127.0.0.1` har doim aynan o'sha qurilmani anglatadi.
 
----
+Telegram serverlariga chiqish ham proxy ishlayotgan qurilmaning interneti orqali amalga oshadi. Agar shu tarmoq Telegram serverlariga chiqishni bloklasa, lokal dastur blokni chetlab o'tishni kafolatlamaydi. Bunday holatda proxy'ni Telegram serverlariga ulana oladigan tashqi VPS/serverda ishga tushirib, Telegramni o'sha serverning ochiq manzili va portiga ulash kerak.
 
-## 🔗 Telegramga ulash (Proxy Link):
+Fake-TLS hamma operator yoki tarmoqda ishlashiga kafolat yo'q. Natija serverning internetga ulanishi, portning ochiqligi va tarmoqdagi bloklash usuliga bog'liq.
 
-Proxy ishlashi uchun quyidagi ma'lumotlar kerak bo'ladi:
-- **Server (Host):** Railway bergan domen (masalan: `my-proxy-production.up.railway.app`)
-- **Port:** 443 (yoki Railway avtomatik ochgan tashqi port)
-- **Secret (Maxfiy kalit):** `0123456789abcdef0123456789abcdef` (buni `config.py` faylidan o'zgartirishingiz mumkin)
-- **Domain (Fake-TLS):** `www.google.com`
+## Windows
 
-### Telegramda ulanish havolasi (link):
-Ushbu havolani Telegramda oching (domen o'rniga o'zingizning Railway domeningizni yozing):
+`release\TelegramProxy.exe` faylini ishga tushiring. Dastur Python talab qilmaydi; odatiy sozlamada proxy `8444` portida tinglaydi va Telegram ulanish havolasini ko'rsatadi.
+
+Joriy `MY_DOMAIN = "127.0.0.1"` sozlamasi bilan havola faqat shu kompyuterdagi Telegram uchun ishlaydi. Boshqa qurilmadan ulash uchun kompyuterga yetib boradigan LAN/public IP yoki domenni sozlash, Windows Firewall va kerak bo'lsa routerda TCP portni ochish zarur.
+
+Kompyuterga kirganda avtomatik ishga tushirish uchun `install_autostart.bat` faylini bir marta ishga tushiring. Avtomatik ishga tushirishni o'chirish uchun Windows'ning `shell:startup` papkasidagi `Telegram Proxy.lnk` yorlig'ini olib tashlang.
+
+## Android
+
+APK build natijasi: `android\app\build\outputs\apk\debug\app-debug.apk`. U Python 3.10 muhitini ichiga oladi, shuning uchun telefonga Python o'rnatish shart emas. Hozirgi build ARM64 va x86_64 qurilmalarni, Android 7.0 (API 24) va undan yangilarini qo'llaydi.
+
+1. APK'ni telefonga ko'chirib o'rnating. Android so'rasa, ushbu manbadan ilova o'rnatishga ruxsat bering.
+2. Ilovani ochib, **Proksini ishga tushirish** tugmasini bosing va bildirishnomaga ruxsat bering.
+3. **Telegramga ulash** tugmasini bosing. Telegram proxy manzilini `127.0.0.1:8444` sifatida ko'rishi kerak.
+
+Proxy ishlayotganida doimiy bildirishnoma ko'rinadi. To'xtatish uchun ilovadagi **Proksini to'xtatish** tugmasini bosing. Android APK faqat shu telefondagi Telegram uchun lokal proxy yaratadi; boshqa qurilmalarga proxy tarqatmaydi. Hozirgi `app-debug.apk` sinov/sideload uchun, Google Play'ga chiqariladigan release build emas.
+
+## Linux server yoki Railway'ga joylashtirish
+
+Loyihada `Dockerfile` mavjud. Tashqi serverda ishga tushirganda:
+
+1. Python manbalari, `requirements.txt` va `Dockerfile`ni Git repozitoriyga joylang.
+2. Dockerfile orqali deploy qiling va serverdagi `PORT` sozlamasini hosting platformasi talabiga moslang.
+3. Hosting platformasi MTProto uchun zarur **kiruvchi TCP** ulanishni qo'llashi va tashqi portni server portiga yo'naltirishi kerak.
+4. Telegramda platforma bergan ishlaydigan public host va tashqi TCP portdan foydalaning; `127.0.0.1` yoki faqat HTTP domenini masofaviy proxy manzili sifatida ishlatmang.
+
+Railway'da oddiy HTTP domen yaratishning o'zi MTProto TCP trafikini yo'naltirishni anglatmaydi. Deploydan oldin tanlangan tarif va networking sozlamalarida tashqi TCP port/proxy imkoniyati borligini tekshiring.
+
+## Sozlamalar va xavfsizlik
+
+- `config.py` port, maxfiy kalit va TLS domenini belgilaydi. `SECRET` muhit o'zgaruvchisi bilan kalit berish mumkin.
+- Ommaga ochiq serverga joylashtirishdan oldin standart/maxfiy kalitni albatta o'zingizga tegishli noyob kalitga almashtiring. Kalitni GitHub, skrinshot yoki ochiq chatga joylamang.
+- `TLS_DOMAIN` hozir `www.google.com` qiymatida. Dastur bu standart qiymat haqida ogohlantiradi; sozlashda o'zingiz tanlagan mavjud domenni ishlating.
+- Server porti internetdan yetib boriladigan bo'lishi va Telegram serverlariga chiquvchi ulanishga ruxsat berilishi kerak.
+
+## Android APK'ni qayta yig'ish
+
+Build kompyuteriga JDK 17, Android SDK va Python 3.10 kerak. `ANDROID_HOME` muhit o'zgaruvchisini Android SDK papkasiga sozlab, Windows'da quyidagini bajaring:
+
+```powershell
+android\gradlew.bat assembleDebug
 ```
-tg://proxy?server=SIZNING_DOMAIN&port=443&secret=ee0123456789abcdef0123456789abcdefwww.google.com
-```
-*(Eslatma: Fake-TLS sekret `ee` prefiksi va oxiriga domen hex kodiga ega bo'ladi, yoki oddiygina Telegram sozlamalaridan server, port va hex-secret ni kiritib ulanishingiz mumkin).*
 
-## Windowsda fon va avtomatik ishga tushirish
-
-Windows foydalanuvchilari `release\TelegramProxy.exe` yoki tayyor Windows ZIP paketidan foydalanishi mumkin; ishga tushirish uchun Python o'rnatish talab qilinmaydi. ZIP'ni to'liq chiqarib, `start.bat` ni oching.
-
-`start.bat` proxy'ni yashirin fonda ishga tushiradi; ishga tushiruvchi oynani yopish proxy'ni to'xtatmaydi. Avtomatik ishga tushirish uchun `install_autostart.bat` ni bir marta ishga tushiring; proxy joriy foydalanuvchi Windows'ga kirganda boshlanadi. Uni o'chirish uchun `Win+R` orqali `shell:startup` papkasini ochib, `Telegram Proxy.lnk` yorlig'ini o'chiring.
-
-`MY_DOMAIN = "127.0.0.1"` bo'lsa, havola faqat proxy ishlayotgan shu kompyuterda ishlaydi. Telefon yoki boshqa qurilmadan ulanish uchun o'sha qurilmadan ko'rinadigan LAN yoki public IP manzil kerak.
-
-## Android telefon uchun APK
-
-`android\app\build\outputs\apk\debug\app-debug.apk` faylini telefonga ko'chirib o'rnating. Ilova Python 3.10 muhitini o'z ichiga oladi; telefonga Python o'rnatish shart emas. Hozirgi APK ARM64 telefonlar va x86_64 qurilmalar uchun, Android 7.0 (API 24) va undan yangilariga mo'ljallangan.
-
-Ilovani ochib, **Proksini ishga tushirish** tugmasini bosing va **Telegramga ulash**-ni tanlang. Proxy telefonning o'zida `127.0.0.1:8444` manzilida ishlaydi; doimiy bildirishnoma ko'rinib turishi kerak. To'xtatish uchun ilovadagi tugmani bosing. Bu sozlama faqat shu telefondagi Telegram uchun; boshqa qurilmalardan ulanishni yoqmaydi.
-
-Muhim: telefondagi lokal proxy Telegram serverlariga shu telefon interneti orqali chiqadi. Tarmoq Telegram serverlariga chiqishni bloklasa, bu APK blokni chetlab o'tishni kafolatlamaydi; bunday holatda proxy'ni Telegram serverlariga chiqa oladigan boshqa serverda ishga tushirish kerak.
-
-APK'ni qayta yig'ish uchun JDK 17, Android SDK, Python 3.10 kerak bo'ladi. `ANDROID_HOME` o'zgaruvchisini SDK papkasiga sozlab, Windows'da `android\gradlew.bat assembleDebug` buyrug'ini bajaring.
+APK `android\app\build\outputs\apk\debug\app-debug.apk` manzilida yaratiladi. APK foydalanuvchilarga yangilanish sifatida tarqatilganda, release buildni bir xil imzolash kaliti bilan yig'ish va `versionCode` qiymatini oshirish kerak.
